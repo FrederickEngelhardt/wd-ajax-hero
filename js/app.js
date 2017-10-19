@@ -55,6 +55,39 @@
       $('.modal-trigger').leanModal();
     }
   };
+  // MY CODE STARTS HERE
 
-  // ADD YOUR CODE HERE
+  // onclick of search button do this
+  $('.btn-large').click(function(event){
+    event.preventDefault()
+    // gets value of input which is a string
+    var input = $('#search').val();
+
+    // prevent search if blank input
+    if (input !== ''){
+      var $xhr = $.getJSON('https://omdb-api.now.sh/?s='+input+'/')
+      $xhr.done(function(data) {
+        if ($xhr.status !== 200) {
+            return
+          }
+        // query database
+        var title = data.Search
+        // console.log(movie)
+        var render = 0
+        for (var i = 0; i < title.length; i++) {
+          var movie_card = {
+            title: title[i]['Title'],
+            poster: title[i]['Poster'],
+            id: title[i]['imdbID'],
+            year: title[i]['Year']
+            // plot: title[i]['Plot']
+            }
+            console.log(movie_card['id'])
+            movies.push(movie_card);
+          }
+          renderMovies();
+          movies.splice(0,movies.length)
+        });
+      }
+    })// MY CODE ENDS HERE
 })();
